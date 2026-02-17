@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "signaldeck-ui"
+version = "0.1.0"
+description = "SignalDeck UI kit (shared templates, macros, static assets)"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "flask>=3.0"
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["signaldeck_ui*"]
+
+[tool.setuptools.package-data]
+signaldeck_ui = [
+  "templates/**/*",
+  "static/**/*"
+]

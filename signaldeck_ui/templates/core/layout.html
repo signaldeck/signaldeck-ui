@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('signaldeck_ui.static', filename='core/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('signaldeck_ui.static', filename='vendor/fontawesome/css/all.min.css') }}">
+    {% if config.get('theme_css_url') %}
+        <link rel="stylesheet" href="{{ config.get('theme_css_url') }}">
+    {% endif %}
+
+    <script src="{{ url_for('signaldeck_ui.static', filename='vendor/jquery/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ url_for('signaldeck_ui.static', filename='vendor/chartjs/chart-4.5.0-umd-min.js') }}"></script>
+    <script src="{{ url_for('signaldeck_ui.static', filename='core/app.js') }}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %} {% endblock %}
+    {% block head_extra %}{% endblock %}
+</head>
+
+<body> 
+    <div class="content">
+        {% block navbar %} {% endblock %}
+    </div>
+    <div class="content">
+        {% block content %} {% endblock %}
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

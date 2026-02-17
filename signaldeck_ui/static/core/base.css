@@ -1,0 +1,396 @@
+/* =========================
+   SignalDeck UI – Modern Base
+   Drop-in replacement for your existing classes.
+   ========================= */
+
+:root{
+  /* Colors */
+  --bg: #0b1220;
+  --surface: #0f1a33;
+  --card: #0e1730;
+  --card-2: #0b1328;
+  --border: rgba(255,255,255,.10);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --muted-2: rgba(255,255,255,.55);
+
+  --primary: #5b8cff;        /* modern blue */
+  --primary-2: #3b6df0;
+  --success: #37d67a;
+  --danger: #ff5c77;
+
+  /* Layout */
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+  --shadow-sm: 0 6px 18px rgba(0,0,0,.28);
+
+  --gap: 14px;
+  --gap-lg: 18px;
+
+  /* Typography */
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+}
+
+*{ box-sizing: border-box; }
+
+html, body{
+  height: 100%;
+}
+
+body{
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background:
+    var(--bg);
+}
+
+/* The app has two .content divs (nav + page). Keep both, but make them look intentional. */
+.content{
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 14px 14px 0 14px;
+}
+
+/* First .content is the navigation in your current markup */
+.content:first-of-type{
+  padding-top: 18px;
+  padding-bottom: 8px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Nav links (you currently render plain <a> links) */
+.content:first-of-type a{
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: .2px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255,255,255,.04);
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+}
+
+.content:first-of-type a:hover{
+  background: rgba(255,255,255,.07);
+  border-color: var(--border);
+  transform: translateY(-1px);
+}
+
+.content:first-of-type a:active{
+  transform: translateY(0);
+}
+
+/* Page content .content (second div) */
+.content:nth-of-type(2){
+  padding-bottom: 18px;
+}
+
+/* Cards / panels */
+.control-element{
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  box-shadow: var(--shadow-sm);
+  margin: 10px 0;
+  display: block;              /* was inline-block */
+  overflow: hidden;
+}
+
+/* Header */
+.control-element-head{
+  background: linear-gradient(90deg, rgba(91,140,255,.75), rgba(59,109,240,.55));
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  padding: 14px 16px;
+  letter-spacing: .2px;
+}
+
+/* Body */
+.control-element-content{
+  padding: 12px 16px 14px 16px;
+}
+
+/* A row in the card that contains title + icons/buttons (your "Übersicht" etc) */
+.conrol-element-item, /* note: your markup uses typo 'conrol' */
+.control-element-item{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+/* Title left */
+.control-element-item-name{
+  width: auto;                 /* was fixed 180px */
+  min-width: 200px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Button group right */
+.control-element-buttons{
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
+
+.action-buttons,
+.action-row,
+.state-actions{
+  align-items: flex-start;
+}
+
+/* Icon buttons (refresh etc) */
+.control-element-button{
+  border-radius: 12px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  color: var(--text);
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;                 /* makes icons consistent */
+  height: 40px;
+  cursor: pointer;
+  transition: transform .08s ease, background .12s ease, border-color .12s ease;
+}
+.control-element-button{
+  width: auto;
+  height: auto;
+  padding: 10px 14px;
+}
+
+.control-element-button.icon{
+  width: 42px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.control-element-button:hover{
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
+  transform: translateY(-1px);
+}
+
+.control-element-button:active{
+  transform: translateY(0);
+}
+
+/* If you have text buttons that reuse the class */
+.control-element-button:not(.fas):not(.far):not(.fa){
+  width: auto;
+  padding: 10px 14px;
+}
+
+/* General action buttons (e.g. big green ones) */
+.action-button{
+  border-radius: 12px;
+  background: linear-gradient(90deg, rgba(55,214,122,.85), rgba(55,214,122,.65));
+  border: 1px solid rgba(55,214,122,.35);
+  padding: 10px 14px;
+  color: #062012;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 180px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.22);
+  cursor: pointer;
+  transition: transform .08s ease, filter .12s ease;
+}
+
+.action-button:hover{ transform: translateY(-1px); filter: brightness(1.02); }
+.action-button:active{ transform: translateY(0); }
+
+/* State sections */
+.state{
+  margin-top: 6px;
+  padding: 10px 0 2px 0;
+}
+
+.state-container{
+  margin-top: 6px;
+  border-radius: var(--radius-sm);
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 10px 12px;
+}
+
+/* Your state rows are currently flex with fixed widths;
+   make them responsive using CSS grid.
+*/
+.state-row{
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(255,255,255,.08);
+}
+
+.state-row:last-child{
+  border-bottom: none;
+}
+
+.state-row.head{
+  font-size: 12px;
+  color: var(--muted-2);
+  font-style: normal;
+  padding-top: 2px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  margin-bottom: 6px;
+}
+
+.state-row.large{
+  font-size: 16px;
+  font-weight: 900;
+  margin-top: 10px;
+  border-bottom: none;
+  padding-top: 10px;
+}
+
+.state-label{
+  width: auto;
+  color: var(--muted);
+}
+
+.state-label.wide{
+  width: auto;
+}
+
+.state-value{
+  width: auto;
+  min-width: 72px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.state-value.red{ color: var(--danger); }
+.state-value.green{ color: var(--success); }
+
+/* Toggle-like small action chips (Tag/Monat/Jahr etc) */
+.action-element-button{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  transition: background .12s ease, border-color .12s ease, transform .08s ease;
+  flex: 0 0 auto;        /* do not grow */
+  width: auto;           /* never stretch to full width */
+  display: inline-flex;  /* stays as chip */
+  align-self: center;
+}
+
+.action-element-button:hover{
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.20);
+  transform: translateY(-1px);
+}
+
+.action-element-button.active{
+  background: rgba(91,140,255,.22);
+  border-color: rgba(91,140,255,.45);
+}
+
+.action-element-button.align-right{
+  margin-left: auto;
+}
+
+.action-element-button.hide{
+  display: none;
+}
+
+/* Charts */
+.state-chart{
+  width: 100% !important;
+  max-width: 100%;
+  display: block;
+  margin-top: 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,.03);
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 8px;
+}
+
+/* Small helper classes you already use */
+.state-log-date{
+  width: 120px;
+  margin-right: 10px;
+  color: var(--muted-2);
+}
+.state-log-msg{
+  width: 100%;
+  color: var(--muted);
+}
+  .state-buttons{
+	display:flex;
+  }
+  
+/* Mobile */
+@media (max-width: 900px){
+  .content{
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .control-element-item-name{
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 650px){
+  .content:first-of-type{
+    gap: 8px;
+  }
+
+  .content:first-of-type a{
+    padding: 8px 9px;
+    font-weight: 700;
+  }
+
+  .control-element-content{
+    padding: 12px 12px 14px 12px;
+  }
+
+  .conrol-element-item,
+  .control-element-item{
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .control-element-buttons{
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .state-row{
+    grid-template-columns: 1fr auto;
+  }
+  
+
+
+
+}
