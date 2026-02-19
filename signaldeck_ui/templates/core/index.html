@@ -5,6 +5,15 @@
     <title>{{ title }}</title>
 {% endblock %}
 
+{% block head_extra %}
+	{% for jsFile in additionalJsFiles %}
+		<script src="{{ jsFile }}"></script>
+	{% endfor %}
+	{% for cssFile in additionalCssFiles %}
+		<link rel="stylesheet" href="{{ cssFile }}"/>
+	{% endfor %}
+{% endblock %}
+
 {% block navbar %}
     {% for p, n in paths %}
         <a href="{{ p }}">{{ n }}</a>

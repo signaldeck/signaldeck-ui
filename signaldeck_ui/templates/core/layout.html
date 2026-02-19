@@ -9,7 +9,6 @@
     {% endif %}
 
     <script src="{{ url_for('signaldeck_ui.static', filename='vendor/jquery/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ url_for('signaldeck_ui.static', filename='vendor/chartjs/chart-4.5.0-umd-min.js') }}"></script>
     <script src="{{ url_for('signaldeck_ui.static', filename='core/app.js') }}"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block title %} {% endblock %}
@@ -25,5 +24,4 @@
     </div>
     {% block scripts %}{% endblock %}
 </body>
-
 </html>

@@ -245,6 +245,19 @@ body{
   border-bottom: 1px dashed rgba(255,255,255,.08);
 }
 
+.state-row-3{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 gleich breite Spalten */
+  gap: 12px;   
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(255,255,255,.08);
+}
+
+.state-row.center .state-label, .state-row-3.center .state-label, .state-row.center .state-value, .state-row-3.center .state-value{
+  text-align: center;
+}
+
 .state-row:last-child{
   border-bottom: none;
 }
@@ -258,7 +271,7 @@ body{
   margin-bottom: 6px;
 }
 
-.state-row.large{
+.state-row.large, .state-row-3.large{
   font-size: 16px;
   font-weight: 900;
   margin-top: 10px;
@@ -325,17 +338,7 @@ body{
   display: none;
 }
 
-/* Charts */
-.state-chart{
-  width: 100% !important;
-  max-width: 100%;
-  display: block;
-  margin-top: 10px;
-  border-radius: var(--radius-sm);
-  background: rgba(255,255,255,.03);
-  border: 1px solid rgba(255,255,255,.08);
-  padding: 8px;
-}
+
 
 /* Small helper classes you already use */
 .state-log-date{
