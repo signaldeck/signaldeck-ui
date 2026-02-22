@@ -4,8 +4,8 @@
 
 It provides:
 
--   The base page layout (`core/layout.html`)
--   Shared Jinja macros (`core/_utils.html`)
+-   The base page layout (`ui/layout.html`)
+-   Shared Jinja macros (`ui/_utils.html`)
 -   Common components (e.g. `core/components/*`)
 -   Static assets (CSS/JS)
 -   Optional vendored libraries (jQuery, Chart.js, Font Awesome)
@@ -57,7 +57,7 @@ UI assets are then available via:
 Plugins and core pages should use the shared layout:
 
 ``` jinja2
-{% extends "core/layout.html" %}
+{% extends "ui/layout.html" %}
 ```
 
 ### Macros / Utilities
@@ -65,7 +65,7 @@ Plugins and core pages should use the shared layout:
 Import shared macros from `_utils.html`:
 
 ``` jinja2
-{% import "core/_utils.html" as ui %}
+{% import "ui/_utils.html" as ui %}
 ```
 
 ### Components (Fragments)
@@ -83,7 +83,7 @@ Example:
 </div>
 ```
 
-Pages are composed by the core runtime (e.g. `core/index.html`).
+Pages are composed by the core runtime (e.g. `ui/index.html`).
 
 ------------------------------------------------------------------------
 
@@ -108,7 +108,7 @@ signaldeck run --config config/haus.json --templates ./templates
 
 This enables instance projects to override UI templates, e.g.:
 
-    ./templates/core/layout.html
+    ./templates/ui/layout.html
 
 ### CSS Overrides
 

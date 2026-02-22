@@ -254,6 +254,24 @@ body{
   border-bottom: 1px dashed rgba(255,255,255,.08);
 }
 
+.state-row-2{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 3 gleich breite Spalten */
+  gap: 12px;   
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(255,255,255,.08);
+}
+
+.state-row-1{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* 3 gleich breite Spalten */
+  gap: 12px;   
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px dashed rgba(255,255,255,.08);
+}
+
 .state-row.center .state-label, .state-row-3.center .state-label, .state-row.center .state-value, .state-row-3.center .state-value{
   text-align: center;
 }
@@ -387,8 +405,7 @@ body{
   }
 
   .control-element-buttons{
-    width: 100%;
-    justify-content: flex-end;
+    margin-right: auto;
   }
 
   .state-row{
