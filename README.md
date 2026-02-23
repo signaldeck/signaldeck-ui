@@ -166,4 +166,4 @@ The base layout can include it conditionally:
 
 ## License
 
-MIT (or your chosen license)
+MIT
