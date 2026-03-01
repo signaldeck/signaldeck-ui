@@ -272,7 +272,14 @@ body{
   border-bottom: 1px dashed rgba(255,255,255,.08);
 }
 
-.state-row.center .state-label, .state-row-3.center .state-label, .state-row.center .state-value, .state-row-3.center .state-value{
+.state-row.center .state-label,
+.state-row-3.center .state-label, 
+.state-row-2.center .state-label, 
+.state-row-1.center .state-label, 
+.state-row.center .state-value, 
+.state-row-3.center .state-value, 
+.state-row-2.center .state-value, 
+.state-row-1.center .state-value{
   text-align: center;
 }
 

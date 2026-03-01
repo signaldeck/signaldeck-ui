@@ -1,6 +1,6 @@
 {% macro renderButton(buttonName,inst,additionalCss="") -%}
 {% set button = inst.buttons_to_display()[buttonName] %}
-<div id="{{ button['id'] }}" class="action-element-button{{ additionalCss }}{{ inst.getCSSClass(button['name']) }}" data-actionhash="{{ inst.hash }}"
+<div id="{{ button['id'] }}" class="action-element-button{{ additionalCss }} {{ inst.getCSSClass(button['name']) }}" data-actionhash="{{ inst.hash }}"
     data-params='{{ button["get_params"]|safe }}'> {{ button["text"] }} </div>
 
 {%- endmacro %}
