@@ -4,149 +4,6 @@ function getResult(data) {
 }
 
 
-
-function getChartConfigScatter(ctx, xVals, yVals, unit) {
-  xStepSize = 1000 * 60 * 60 //for intraday, 1 hour
-  if (ctx.dataset["agg"] == "day") {
-    xStepSize = 1000 * 60 * 60 * 24 * 5 //5 days
-  }
-  data = [];
-  for (i = 0; i < xVals.length; i++) {
-    data.push({ x: xVals[i], y: yVals[i] })
-  }
-  const yScalePart =
-    ctx.dataset["ymin"] != "" && ctx.dataset["ymax"] != ""
-      ? { y: { min: Math.floor(ctx.dataset["ymin"]), max: Math.floor(ctx.dataset["ymax"]) } }
-      : {};
-
-  return {
-    type: 'scatter',
-    data: {
-      datasets: [
-        {
-          label: ctx.dataset["label"],
-          data: data,
-          showLine: true,
-          fill: false,
-          //borderColor: 'rgba(0, 200, 0, 1)'
-        }
-      ]
-    },
-    options: {
-      aspectRatio: 1.25,
-      tooltips: {
-        mode: 'index',
-        intersect: false,
-      },
-      hover: {
-        mode: 'nearest',
-        intersect: true
-      },
-      scales: {
-        x: {
-          ticks: {
-            callback: function (val, index) {
-              val = new Date(val);
-              if (ctx.dataset["agg"] == "") { return val.toLocaleTimeString(); }
-              if (ctx.dataset["agg"] == "day") { return val.toLocaleDateString(); }
-              return val.toString();
-            },
-            //color: "red",
-            stepSize: xStepSize
-          }
-        },
-        ...yScalePart
-      },
-      plugins: {
-        tooltip: {
-          callbacks: {
-            label: function (context) {
-              dateLong = context.parsed.x
-              date = new Date(dateLong);
-              dateRes = date.toString();
-              if (ctx.dataset["agg"] == "") { dateRes = date.toLocaleTimeString(); }
-              if (ctx.dataset["agg"] == "day") { dateRes = date.toLocaleDateString(); }
-              yVal = context.parsed.y
-              if (Math.round(yVal) != yVal) {
-                yVal = Number(yVal).toFixed(2);
-              }
-              return dateRes + ": " + yVal + " " + unit
-            }
-          }
-        }
-      }
-    }
-  };
-}
-
-
-function getChartConfigBar(ctx, xVals, yVals, unit) {
-  var step = 1
-  if (xVals.length > 10) {
-    step = Math.round(xVals.length / 10)  //approx. 10 labels
-  }
-  data = {
-    labels: xVals,
-    datasets: [
-      {
-        label: ctx.dataset["label"],
-        data: yVals
-      }
-    ]
-  }
-  return {
-    type: 'bar',
-    data: data,
-    options: {
-      aspectRatio: 1.25,
-      scales: {
-        x: {
-          ticks: {
-            callback: function (val, index) {
-              return val % step == 0 ? new Date(parseInt(this.getLabelForValue(val))).toLocaleDateString() : "";
-            }
-          }
-        },
-        y: {
-          beginAtZero: true
-        }
-      },
-      plugins: {
-        tooltip: {
-          callbacks: {
-            title: function (context) {
-              data = context[0];
-              return new Date(parseInt(data.label)).toLocaleDateString();
-            },
-            label: function (context) {
-              return parseFloat(context.parsed.y).toFixed(1) + " " + unit;
-            }
-          }
-        }
-      }
-    }
-  };
-}
-
-function initChart(ctx) {
-  xVals = JSON.parse(ctx.dataset["xvals"])
-  yVals = JSON.parse(ctx.dataset["yvals"])
-  unit = ctx.dataset["unit"]
-
-  var config = undefined;
-  if (ctx.dataset["type"] == "scatter") {
-    config = getChartConfigScatter(ctx, xVals, yVals, unit);
-  }
-  if (ctx.dataset["type"] == "bar") {
-    config = getChartConfigBar(ctx, xVals, yVals, unit);
-  }
-  if (config == undefined) {
-    console.log("Invalid chart type given.");
-    return;
-  }
-  new Chart(ctx, config);
-}
-
 function addStateChangeEvent(id, actionhash, get_params) {
   console.log(actionhash)
   console.log($('.control-element-button[data-actionhash="' + actionhash + '"]')[0])
@@ -186,12 +43,7 @@ function addStateChangeEvent(id, actionhash, get_params) {
             addStateChangeEvent(element["id"], element["actionhash"], element["get_params"]);
           });
         }
-        if (data.render_charts != undefined) {
-          data.render_charts.forEach(element => {
-            el = document.getElementById(element);
-            initChart(el);
-          });
-        }
+
         if (data.js_functions !== undefined) {
 
           Object.entries(data.js_functions).forEach(([elementId, functionName]) => {
@@ -259,11 +111,27 @@ $(document).ready(function () {
             addStateChangeEvent(element["id"], element["actionhash"], element["get_params"]);
           });
         }
-        if (data.render_charts != undefined) {
-          data.render_charts.forEach(element => {
-            el = document.getElementById(element);
-            initChart(el);
+        if (data.js_functions !== undefined) {
+
+          Object.entries(data.js_functions).forEach(([elementId, functionName]) => {
+
+            const el = document.getElementById(elementId);
+            const fn = window[functionName];
+
+            if (!el) {
+              console.warn("Element nicht gefunden:", elementId);
+              return;
+            }
+
+            if (typeof fn !== "function") {
+              console.warn("JS Funktion nicht gefunden:", functionName);
+              return;
+            }
+
+            fn(el);
+
           });
+
         }
       }
     });
@@ -273,10 +141,7 @@ $(document).ready(function () {
     el = record
     addStateChangeEvent(el.id, el.dataset["actionhash"], el.dataset["params"])
   })
-  $(".state-chart").each(function (index, record) {
-    el = record
-    initChart(el);
-  })
+
   $('.copy-btn').on('click', function () {
     const $btn = $(this);
     const hash = $btn.data('hash');
