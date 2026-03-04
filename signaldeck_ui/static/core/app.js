@@ -13,10 +13,10 @@ function getChartConfigScatter(ctx, xVals, yVals, unit) {
   data = [];
   for (i = 0; i < xVals.length; i++) {
     data.push({ x: xVals[i], y: yVals[i] })
-  } 
+  }
   const yScalePart =
     ctx.dataset["ymin"] != "" && ctx.dataset["ymax"] != ""
-      ? { y: { min: Math.floor(ctx.dataset["ymin"]) , max:Math.floor(ctx.dataset["ymax"]) } }
+      ? { y: { min: Math.floor(ctx.dataset["ymin"]), max: Math.floor(ctx.dataset["ymax"]) } }
       : {};
 
   return {
@@ -80,19 +80,20 @@ function getChartConfigScatter(ctx, xVals, yVals, unit) {
 }
 
 
-function getChartConfigBar(ctx, xVals, yVals, unit){
+function getChartConfigBar(ctx, xVals, yVals, unit) {
   var step = 1
-  if(xVals.length > 10){
+  if (xVals.length > 10) {
     step = Math.round(xVals.length / 10)  //approx. 10 labels
   }
-  data={
+  data = {
     labels: xVals,
     datasets: [
       {
         label: ctx.dataset["label"],
         data: yVals
       }
-    ]}
+    ]
+  }
   return {
     type: 'bar',
     data: data,
@@ -113,14 +114,14 @@ function getChartConfigBar(ctx, xVals, yVals, unit){
       plugins: {
         tooltip: {
           callbacks: {
-            title: function(context) {
-              data= context[0];
+            title: function (context) {
+              data = context[0];
               return new Date(parseInt(data.label)).toLocaleDateString();
             },
-            label: function(context){
-              return parseFloat(context.parsed.y).toFixed(1) + " " +unit;
+            label: function (context) {
+              return parseFloat(context.parsed.y).toFixed(1) + " " + unit;
             }
-        }
+          }
         }
       }
     }
@@ -133,13 +134,13 @@ function initChart(ctx) {
   unit = ctx.dataset["unit"]
 
   var config = undefined;
-  if(ctx.dataset["type"] == "scatter"){
+  if (ctx.dataset["type"] == "scatter") {
     config = getChartConfigScatter(ctx, xVals, yVals, unit);
   }
-  if(ctx.dataset["type"] == "bar"){
+  if (ctx.dataset["type"] == "bar") {
     config = getChartConfigBar(ctx, xVals, yVals, unit);
   }
-  if(config == undefined){
+  if (config == undefined) {
     console.log("Invalid chart type given.");
     return;
   }
@@ -150,33 +151,33 @@ function addStateChangeEvent(id, actionhash, get_params) {
   console.log(actionhash)
   console.log($('.control-element-button[data-actionhash="' + actionhash + '"]')[0])
   let elementName = $('.control-element-button[data-actionhash="' + actionhash + '"]')[0].dataset["element"]
-  state_params = $("#state_" +actionhash).data("params");
-  const params ={  ...state_params , ...JSON.parse(get_params)}
+  state_params = $("#state_" + actionhash).data("params");
+  const params = { ...state_params, ...JSON.parse(get_params) }
   var fileInput = null;
-  
+
   $("#" + id).click(function (element) {
     for (const [key, value] of entriesStartingWithAt(params)) {
       const [isFile, val] = resolveValue(value.slice(1)); // Beispiel: "@" entfernen
       if (isFile) {
         fileInput = val; // Speichern des File-Objekts
-        delete params[key];  
-      }else{
+        delete params[key];
+      } else {
         params[key] = val; // Ersetzen des Platzhalters durch den tatsächlichen Wert
       }
     }
-  const fd = new FormData();
-  if (fileInput) {
-    fd.append("file", fileInput);
-  }
-  fd.append("payload", JSON.stringify({ actionhash, ...params })); // JSON als String dazu
+    const fd = new FormData();
+    if (fileInput) {
+      fd.append("file", fileInput);
+    }
+    fd.append("payload", JSON.stringify({ actionhash, ...params })); // JSON als String dazu
 
-$.ajax({
-  url: "/run",
-  type: "POST",
-  data: fd,
-  processData: false,
-  contentType: false,
-  success: function (data) {
+    $.ajax({
+      url: "/run",
+      type: "POST",
+      data: fd,
+      processData: false,
+      contentType: false,
+      success: function (data) {
         if (data.html != undefined) {
           document.getElementById("state-" + elementName).innerHTML = data.html;
         }
@@ -190,6 +191,28 @@ $.ajax({
             el = document.getElementById(element);
             initChart(el);
           });
+        }
+        if (data.js_functions !== undefined) {
+
+          Object.entries(data.js_functions).forEach(([elementId, functionName]) => {
+
+            const el = document.getElementById(elementId);
+            const fn = window[functionName];
+
+            if (!el) {
+              console.warn("Element nicht gefunden:", elementId);
+              return;
+            }
+
+            if (typeof fn !== "function") {
+              console.warn("JS Funktion nicht gefunden:", functionName);
+              return;
+            }
+
+            fn(el);
+
+          });
+
         }
       }
     })
@@ -211,7 +234,7 @@ function resolveValue(name) {
   return [false, $('#' + name).val()];
 }
 
-  function* entriesStartingWithAt(obj) {
+function* entriesStartingWithAt(obj) {
   for (const [key, value] of Object.entries(obj)) {
     if (typeof value === "string" && value.startsWith("@")) {
       yield [key, value];
@@ -254,9 +277,9 @@ $(document).ready(function () {
     el = record
     initChart(el);
   })
-    $('.copy-btn').on('click', function () {
-    const $btn      = $(this);
-    const hash  = $btn.data('hash');   
+  $('.copy-btn').on('click', function () {
+    const $btn = $(this);
+    const hash = $btn.data('hash');
 
     // moderner Clipboard‑API‑Weg
     if (navigator.clipboard && navigator.clipboard.writeText) {
