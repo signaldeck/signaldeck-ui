@@ -5,8 +5,6 @@ function getResult(data) {
 
 
 function addStateChangeEvent(id, actionhash, get_params) {
-  console.log(actionhash)
-  console.log($('.control-element-button[data-actionhash="' + actionhash + '"]')[0])
   let elementName = $('.control-element-button[data-actionhash="' + actionhash + '"]')[0].dataset["element"]
   state_params = $("#state_" + actionhash).data("params");
   const params = { ...state_params, ...JSON.parse(get_params) }
